@@ -124,3 +124,9 @@ mybatis.configuration.map-underscore-to-camel-case=true
     - 创建服务层QuestionService，通过操作持久层将问题内容封装至QuestionDTO
     - 编写控制层逻辑，将从service中拿到的内容加入到model，并返回给页面
     - 编写html页面，解析后端传来的model中的信息
+    
+#### 分页功能
+- 首页的控制层接收页数信息，通过页数信息查询数据
+    - 利用`@RequestParam(name = "page", defaultValue = "1") Integer page`获取页面传的页数信息
+    - 将参数传至service层，在service层计算页面的偏移量，并传至持久层用于数据查询
+    - 编写paginationDTO，用于封装查询到的问题列表和分页信息

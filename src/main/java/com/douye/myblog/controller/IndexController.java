@@ -1,5 +1,6 @@
 package com.douye.myblog.controller;
 
+import com.douye.myblog.dto.PaginationDTO;
 import com.douye.myblog.dto.QuestionDTO;
 import com.douye.myblog.mapper.QuestionMapper;
 import com.douye.myblog.mapper.UserMapper;
@@ -26,7 +27,9 @@ public class IndexController {
     QuestionService questionService;
 
     @GetMapping("/")
-    public String index(HttpServletRequest request,Model model) {
+    public String index(HttpServletRequest request,Model model ,
+                        @RequestParam(name = "page", defaultValue = "1") Integer page,
+                        @RequestParam(name = "size", defaultValue = "3") Integer size) {
         Cookie[] cookies = request.getCookies();
         if (cookies != null) {
             for (Cookie cookie : cookies) {
@@ -40,8 +43,8 @@ public class IndexController {
                 }
             }
         }
-        List<QuestionDTO> questions = questionService.findAll();
-        model.addAttribute("questions",questions);
+        PaginationDTO pagination = questionService.findAll(page,size);
+        model.addAttribute("pagination",pagination);
         return "index";
     }
 
