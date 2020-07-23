@@ -1,7 +1,11 @@
 package com.douye.myblog.controller;
 
+import com.douye.myblog.dto.QuestionDTO;
+import com.douye.myblog.mapper.QuestionMapper;
 import com.douye.myblog.mapper.UserMapper;
+import com.douye.myblog.model.Question;
 import com.douye.myblog.model.User;
+import com.douye.myblog.service.QuestionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -10,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 @Controller
 public class IndexController {
@@ -17,10 +22,13 @@ public class IndexController {
     @Autowired
     UserMapper userMapper;
 
+    @Autowired
+    QuestionService questionService;
+
     @GetMapping("/")
-    public String index(HttpServletRequest request) {
+    public String index(HttpServletRequest request,Model model) {
         Cookie[] cookies = request.getCookies();
-        if (cookies != null)
+        if (cookies != null) {
             for (Cookie cookie : cookies) {
                 if (cookie.getName().equals("token")) {
                     String value = cookie.getValue();
@@ -31,6 +39,9 @@ public class IndexController {
                     break;
                 }
             }
+        }
+        List<QuestionDTO> questions = questionService.findAll();
+        model.addAttribute("questions",questions);
         return "index";
     }
 

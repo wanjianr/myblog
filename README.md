@@ -112,3 +112,15 @@ create table question
     - 空值判断
     - 登陆验证
     - 存储数据
+    
+#### mybatis驼峰命名设置
+```properties
+mybatis.configuration.map-underscore-to-camel-case=true
+```
+#### 首页问题显示
+- 添加用户图片字段
+- 首页问题列表显示
+    - dto中创建类QuestionDTO，将user信息关联至Question
+    - 创建服务层QuestionService，通过操作持久层将问题内容封装至QuestionDTO
+    - 编写控制层逻辑，将从service中拿到的内容加入到model，并返回给页面
+    - 编写html页面，解析后端传来的model中的信息
