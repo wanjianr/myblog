@@ -130,3 +130,28 @@ mybatis.configuration.map-underscore-to-camel-case=true
     - 利用`@RequestParam(name = "page", defaultValue = "1") Integer page`获取页面传的页数信息
     - 将参数传至service层，在service层计算页面的偏移量，并传至持久层用于数据查询
     - 编写paginationDTO，用于封装查询到的问题列表和分页信息
+    
+#### 抽取html中的公共代码块
+```html
+<!--定义-->
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <body>
+    <div th:fragment="copy">
+      &copy; 2011 The Good Thymes Virtual Grocery
+    </div>
+  </body>
+</html>
+
+<!--调用-->
+<body>
+  ...
+  <div th:insert="~{footer :: copy}"></div>
+</body>
+```
+
+#### 展示个人页面
+- （控制层）首先完成登陆验证，若用户已登陆则获取user对象，否则重定向至首页（通过`HttpServletRequest request`获取cookie信息来验证）
+- 验证成功后，根据用户id查询question数据表
+    - （服务层）根据前端请求的页数据，计算分页数据、根据页码查询question数据表，并封装成paginationDTO对象，返回给控制层
+    - （持久层）根据服务层提供的偏移量及显示条数信息查询数据库，并返回值服务层

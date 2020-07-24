@@ -4,7 +4,6 @@ import com.douye.myblog.mapper.QuestionMapper;
 import com.douye.myblog.mapper.UserMapper;
 import com.douye.myblog.model.Question;
 import com.douye.myblog.model.User;
-import com.sun.org.apache.bcel.internal.generic.ARETURN;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
