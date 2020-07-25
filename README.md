@@ -155,3 +155,15 @@ mybatis.configuration.map-underscore-to-camel-case=true
 - 验证成功后，根据用户id查询question数据表
     - （服务层）根据前端请求的页数据，计算分页数据、根据页码查询question数据表，并封装成paginationDTO对象，返回给控制层
     - （持久层）根据服务层提供的偏移量及显示条数信息查询数据库，并返回值服务层
+    
+#### 拦截器（完成登陆验证功能）
+- 官方文档1.11.5: `https://docs.spring.io/spring/docs/5.2.8.RELEASE/spring-framework-reference/web.html#mvc-config-interceptors`
+
+#### 修复登录问题，增加登出功能
+- 登陆逻辑
+    - 查询accountId，如果有则更新user信息，否则插入user
+- 登出逻辑
+    - 删除request请求中的`user`属性（session中的）
+    - 新建一个key为`token`值为`null`的cookie对象
+    - 设置最大时间为0
+    - 在response对象中添加该cookie

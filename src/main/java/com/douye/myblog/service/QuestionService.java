@@ -37,6 +37,7 @@ public class QuestionService {
         }
         if (page < 1) page = 1;
         if (page > totalPage) page = totalPage;
+        if (page < 1) page = 1;
 
         paginationDTO.setPagination(totalPage,page);
 
@@ -72,6 +73,7 @@ public class QuestionService {
 
         if (page < 1) page = 1;
         if (page > totalPage) page = totalPage;
+        if (page < 1) page = 1; // 防止总页数为0的 情况
 
         paginationDTO.setPagination(totalPage,page);
 

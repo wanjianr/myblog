@@ -52,18 +52,7 @@ public class QuestionController {
             return "publish";
         }
 
-        User user = null;
-        Cookie[] cookies = request.getCookies();
-        for (Cookie cookie : cookies) {
-            if (cookie.getName().equals("token")) {
-                String value = cookie.getValue();
-                user = userMapper.findByToken(value);
-                if (user != null) {
-                    request.getSession().setAttribute("user",user);
-                }
-                break;
-            }
-        }
+        User user = (User) request.getSession().getAttribute("user");
 
         if (user == null) {
             model.addAttribute("error","用户未登录");

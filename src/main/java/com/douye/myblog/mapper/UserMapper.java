@@ -1,10 +1,7 @@
 package com.douye.myblog.mapper;
 
 import com.douye.myblog.model.User;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -18,4 +15,10 @@ public interface UserMapper {
 
     @Select("select * from user where id=#{creator}")
     User findById(Long creator);
+
+    @Select("select * from user where account_id = #{accountId}")
+    User findByAccountId(@Param("accountId") String accountId);
+
+    @Update("update user set name = #{name}, token=#{token}, gmt_create=#{gmtCreate} ,gmt_modified=#{gmtModified},avatar_url=#{avatarUrl} where account_id = #{accountId}")
+    void updata(User user);
 }
