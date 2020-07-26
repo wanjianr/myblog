@@ -12,16 +12,12 @@ public class UserService {
 
     public void createOrUpdate(User user) {
         // 根据accountId查询user表
-        User userMapperByAccountId = userMapper.findByAccountId(user.getAccountId());
-        if (userMapperByAccountId == null) {
+        User dpUser = userMapper.findByAccountId(user.getAccountId());
+        if (dpUser == null) {
             // 用户不存在，执行插入操作
-            user.setGmtCreate(System.currentTimeMillis());
-            user.setGmtModified(user.getGmtCreate());
             userMapper.insert(user);
         } else {
             // 用户存在，执行更新操作
-            user.setGmtCreate(System.currentTimeMillis());
-            user.setGmtModified(user.getGmtCreate());
             userMapper.updata(user);
         }
 

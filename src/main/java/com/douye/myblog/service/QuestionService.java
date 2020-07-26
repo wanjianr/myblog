@@ -46,7 +46,7 @@ public class QuestionService {
         List<Question> questions = questionMapper.findAll(offset,size);
 
         for (Question question : questions) {
-            User user = userMapper.findById(question.getCreator());
+            User user = userMapper.findByCreator(question.getCreator());
             QuestionDTO questionDTO = new QuestionDTO();
             BeanUtils.copyProperties(question,questionDTO);
             questionDTO.setUser(user);
@@ -57,7 +57,7 @@ public class QuestionService {
         return paginationDTO;
     }
 
-    public PaginationDTO findAll(Long id, Integer page, Integer size) {
+    public PaginationDTO findMyQuestion(Long id, Integer page, Integer size) {
         PaginationDTO paginationDTO = new PaginationDTO();
         Integer totalPage;
         Integer totalCount = questionMapper.userQuestionCount(id);
@@ -81,7 +81,7 @@ public class QuestionService {
         List<Question> questions = questionMapper.findByCreator(id,offset,size);
 
         for (Question question : questions) {
-            User user = userMapper.findById(question.getCreator());
+            User user = userMapper.findByCreator(question.getCreator());
             QuestionDTO questionDTO = new QuestionDTO();
             BeanUtils.copyProperties(question,questionDTO);
             questionDTO.setUser(user);
@@ -89,5 +89,28 @@ public class QuestionService {
         }
         paginationDTO.setQuestions(questionDTOList);
         return paginationDTO;
+    }
+
+    public QuestionDTO findById(Long id) {
+        QuestionDTO questionDTO = questionMapper.findById(id);
+        User byCreator = userMapper.findByCreator(questionDTO.getCreator());
+        questionDTO.setUser(byCreator);
+        return questionDTO;
+    }
+
+    public void updateOrCreate(Question question) {
+        if (question.getId() == null) {
+            // 插入
+            question.setGmtCreate(System.currentTimeMillis());
+            question.setGmtModified(question.getGmtCreate());
+            question.setViewCount(0);
+            question.setLikeCount(0);
+            question.setCommentCount(0);
+            questionMapper.create(question);
+        } else {
+            // 更新
+            question.setGmtModified(System.currentTimeMillis());
+            questionMapper.update(question);
+        }
     }
 }

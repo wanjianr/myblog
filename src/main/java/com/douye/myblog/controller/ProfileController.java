@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 
 @Controller
@@ -38,9 +37,8 @@ public class ProfileController {
         if (user == null) {
             return "redirect:/";
         }
-        PaginationDTO pagination = questionService.findAll(user.getId(),page,size);
+        PaginationDTO pagination = questionService.findMyQuestion(user.getId(),page,size);
         model.addAttribute("pagination",pagination);
         return "profile";
     }
-
 }

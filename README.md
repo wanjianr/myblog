@@ -167,3 +167,7 @@ mybatis.configuration.map-underscore-to-camel-case=true
     - 新建一个key为`token`值为`null`的cookie对象
     - 设置最大时间为0
     - 在response对象中添加该cookie
+    
+#### 问题详情页
+- 编辑功能
+    - 根据问题id来判断问题是更新还是创建 

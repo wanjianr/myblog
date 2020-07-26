@@ -1,10 +1,8 @@
 package com.douye.myblog.mapper;
 
+import com.douye.myblog.dto.QuestionDTO;
 import com.douye.myblog.model.Question;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -27,4 +25,10 @@ public interface QuestionMapper {
 
     @Select("select count(1) from question where creator=#{id}")
     Integer userQuestionCount(@Param("id") Long id);
+
+    @Select("select * from question where id = #{id}")
+    QuestionDTO findById(@Param("id") Long id);
+
+    @Update("update question set title=#{title}, description=#{description}, gmt_modified=#{gmtModified}, tag=#{tag} where id=#{id}")
+    void update(Question question);
 }

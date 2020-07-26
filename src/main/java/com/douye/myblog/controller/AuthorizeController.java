@@ -5,6 +5,7 @@ import com.douye.myblog.dto.GithubUser;
 import com.douye.myblog.model.User;
 import com.douye.myblog.provider.GithubProvider;
 import com.douye.myblog.service.UserService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -17,6 +18,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.UUID;
 
 @Controller
+@Slf4j
 public class AuthorizeController {
     @Autowired
     private GithubProvider githubProvider;
@@ -50,6 +52,8 @@ public class AuthorizeController {
             String token = UUID.randomUUID().toString();
             user.setToken(token);
             user.setName(githubUser.getName());
+            user.setGmtCreate(System.currentTimeMillis());
+            user.setGmtModified(user.getGmtCreate());
             user.setAccountId(String.valueOf(githubUser.getId()));
             user.setAvatarUrl(githubUser.getAvatarUrl());
 
@@ -59,7 +63,7 @@ public class AuthorizeController {
             response.addCookie(cookie);
             return "redirect:/";
         } else {
-            //log.error("callback get github error,{}", githubUser);
+            log.error("callback get github error,{}", githubUser);
             // 登录失败，重新登录
             return "redirect:/";
         }
