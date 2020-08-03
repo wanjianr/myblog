@@ -4,8 +4,9 @@
     <div th:fragment="head">
         <title>豆爷de博客</title>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-        <script src="/js/jquery-1.11.0.min.js"></script>
-        <script src="/js/bootstrap.min.js" type="application/javascript"></script>
+        <script th:src="@{/js/jquery-3.4.1.min.js}"></script>
+        <script th:src="@{/js/bootstrap.min.js}" type="application/javascript"></script>
+        <script th:src="@{/js/community.js}" type="application/javascript"></script>
         <link rel="stylesheet" href="/css/bootstrap.min.css">
         <link rel="stylesheet" href="/css/bootstrap-theme.min.css">
         <link rel="stylesheet" href="/css/myblog.css">
@@ -31,5 +32,7 @@
         <script src="/js/lib/marked.min.js"></script>
         <script src="/js/lib/prettify.min.js"></script>
     </head>
+
+
 </head>
 </html>

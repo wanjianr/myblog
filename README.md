@@ -171,3 +171,63 @@ mybatis.configuration.map-underscore-to-camel-case=true
 #### 问题详情页
 - 编辑功能
     - 根据问题id来判断问题是更新还是创建 
+    
+#### 集成Mybatis Generator
+- `https://mybatis.org/generator/`
+- 引入maven依赖
+```xml
+<plugin>
+    <groupId>org.mybatis.generator</groupId>
+    <artifactId>mybatis-generator-maven-plugin</artifactId>
+    <version>1.4.0</version>
+</plugin>
+```
+- mvn -Dmybatis.generator.overwrite=true mybatis-generator:generate
+- 创建配置文件 `generatorConfig.xml`
+
+#### 捕捉错误路径返回指定错误页面
+
+#### 阅读数更新
+
+#### mysql编码格式
+```mysql
+# 查看数据表的编码格式
+show create table <表名>;
+
+# 创建数据库时指定数据库的字符集
+create database <数据库名> character set utf8;
+
+# 修改数据库的编码格式
+alter database <数据库名> character set utf8;
+
+# 修改数据表格编码格式
+alter table <表名> character set utf8;
+
+# 修改字段编码格式
+alter table <表名> change <字段名> <字段名> <类型> character set utf8;
+alter table user change username username varchar(20) character set utf8 not null;
+
+
+
+```
+#### 新增回复功能
+- 新建comment数据表
+```mysql
+create table comment
+(
+    id           bigint auto_increment
+        primary key,
+    parent_id    bigint           not null,
+    type         int              not null,
+    commentator  int              not null,
+    gmt_create   bigint           not null,
+    gmt_modified bigint           not null,
+    like_count   bigint default 0 null,
+    comment      varchar(1024)    null
+);
+```
+- 创建commentController
+- 创建CommentDTO用于将json分装成对象
+- 创建CommentMapper
+- 报错 : `org.thymeleaf.exceptions.TemplateInputException: Error resolving template`
+    - `https://blog.csdn.net/weixin_42322648/article/details/105387615`

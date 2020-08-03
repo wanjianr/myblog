@@ -14,6 +14,7 @@ public class WebConfig implements WebMvcConfigurer {
     SessionInterceptor sessionInterceptor;
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(sessionInterceptor).addPathPatterns("/**"); // 拦截所有地址
+        registry.addInterceptor(sessionInterceptor).addPathPatterns("/**");
+//                .excludePathPatterns("/","/css/**","/fonts/**","/images/**","/js/**"); // 拦截所有地址
     }
 }

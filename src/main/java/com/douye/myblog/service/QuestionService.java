@@ -113,4 +113,8 @@ public class QuestionService {
             questionMapper.update(question);
         }
     }
+
+    public void viewCountInc(Long id) {
+        questionMapper.updateViewCount(id);
+    }
 }
