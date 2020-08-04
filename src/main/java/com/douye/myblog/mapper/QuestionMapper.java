@@ -40,4 +40,7 @@ public interface QuestionMapper {
 
     @Update("update question set comment_count = comment_count + #{commentCount} where id = #{id}")
     int incCommentCount(Question record);
+
+    @Select("select * from question where tag regexp #{tag}")
+    List<Question> searchRelated(Question question);
 }

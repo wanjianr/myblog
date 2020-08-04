@@ -13,9 +13,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Controller
 public class CommentController {
@@ -40,10 +38,10 @@ public class CommentController {
         comment.setType(commentDTO.getType());
         comment.setCommentator(user.getId());
         comment.setGmtCreate(System.currentTimeMillis());
-        comment.setGmtModified(commentDTO.getGmtCreate());
-        comment.setLikeCount(commentDTO.getLikeCount());
+        comment.setGmtModified(comment.getGmtCreate());
+        comment.setLikeCount(0L);
         comment.setContent(commentDTO.getContent());
-        commentService.insert(comment);
+        commentService.insert(comment, user);
         return ResultDTO.okOf();   // @ResponseBody 可以讲对象序列化为json传给前端
     }
 

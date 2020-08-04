@@ -1,5 +1,7 @@
 package com.douye.myblog.interceptor;
 
+import com.douye.myblog.enums.NotificationStatusEnum;
+import com.douye.myblog.mapper.NotificationMapper;
 import com.douye.myblog.mapper.UserMapper;
 import com.douye.myblog.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +19,9 @@ public class SessionInterceptor implements HandlerInterceptor {
     @Autowired
     UserMapper userMapper;
 
+    @Autowired
+    NotificationMapper notificationMapper;
+
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         Cookie[] cookies = request.getCookies();
@@ -25,8 +30,10 @@ public class SessionInterceptor implements HandlerInterceptor {
                 if (cookie.getName().equals("token")) {
                     String value = cookie.getValue();
                     User user = userMapper.findByToken(value);
+                    int unreadCount = notificationMapper.getUnreadCount(user.getId(), NotificationStatusEnum.UNREAD.getStatus());
                     if (user != null) {
                         request.getSession().setAttribute("user",user);
+                        request.getSession().setAttribute("unreadCount",unreadCount);
                     }
                     break;
                 }

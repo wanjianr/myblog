@@ -231,3 +231,29 @@ create table comment
 - 创建CommentMapper
 - 报错 : `org.thymeleaf.exceptions.TemplateInputException: Error resolving template`
     - `https://blog.csdn.net/weixin_42322648/article/details/105387615`
+ 
+#### 二级回复功能存在的问题： 不支持markdown语法
+
+#### 相关问题展示，mysql匹配
+- 正则匹配 : `select * from question where tag regexp 'thy|java';`
+- 模糊匹配 : `select * from question where tag like '%java%';`
+
+#### 设定标签范围
+- TagDTO 标签基础类
+- TagCache 封装设定的标签
+
+#### 完成回复通知功能
+- 新建notification表
+
+- 新建notification模型类
+
+- 新建通知类型枚举类NotificationTypeEnum，用于记录通知的类型（回复问题，回复评论）
+- 新建状态枚举NotificationStatusEnum，用于记录所有状态（已读，未读）
+
+- 在创建评论时新建通知
+    - 在CommentService中插入评论后，立即创建通知createNotify,将数据存入数据库
+    - 在个人页面控制层ProfileController编写控制逻辑，获取所有问题的回复，并返回至前端
+        - 新建服务层NotificationService，编写获取分页对象的方法
+        - 新建NotificationDTO类，用于封装前端需要显示的通知信息
+    - 编写控制层NotificationController，用于实现用户在个人页面点击相关通知时，处理相关请求
+    - 在拦截器SessionInterceptor中将用户未阅读的通知加入session中，方便后续页面随时获取

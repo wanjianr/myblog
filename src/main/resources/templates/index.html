@@ -38,7 +38,7 @@
 <!--                    </li>-->
 <!--                </ul>-->
 
-                <div class="media" th:each="question : ${pagination.questions}">
+                <div class="media" th:each="question : ${pagination.data}">
                     <div class="media-left">
                         <a href="#">
                             <!--/*@thymesVar id="avatarUrl" type=""*/-->
@@ -91,6 +91,7 @@
 
                     </ul>
                 </nav>
+
 <!--                <nav aria-label="Page navigation">-->
 <!--                    <ul class="pagination">-->
 <!--                        <li th:if="${pagination.showFirstPage}">-->

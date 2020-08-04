@@ -6,8 +6,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Data
-public class PaginationDTO {
-    private List<QuestionDTO> questions;
+public class PaginationDTO<T> {
+    // 这里改为泛型接收QuestionDTO和NotifictionDTO
+    private List<T> data;
     private boolean showPrevious;
     private boolean showFirstPage;
     private boolean showNext;
@@ -23,7 +24,7 @@ public class PaginationDTO {
         pages.add(page);
         for (int i = 1; i <= 3; i++) {
             if (page-i > 0) pages.add(0,page-i);
-            if (page+i < totalPage) pages.add(page+i);
+            if (page+i <= totalPage) pages.add(page+i);
         }
 
         // “首页”按钮是否显示

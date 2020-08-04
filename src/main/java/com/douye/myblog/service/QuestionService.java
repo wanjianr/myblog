@@ -2,16 +2,21 @@ package com.douye.myblog.service;
 
 import com.douye.myblog.dto.PaginationDTO;
 import com.douye.myblog.dto.QuestionDTO;
+import com.douye.myblog.exception.CustomizeErrorCode;
+import com.douye.myblog.exception.CustomizeException;
 import com.douye.myblog.mapper.QuestionMapper;
 import com.douye.myblog.mapper.UserMapper;
 import com.douye.myblog.model.Question;
 import com.douye.myblog.model.User;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class QuestionService {
@@ -22,9 +27,9 @@ public class QuestionService {
     @Autowired
     UserMapper userMapper;
 
-    public PaginationDTO findAll(Integer page, Integer size) {
+    public PaginationDTO<QuestionDTO> findAll(Integer page, Integer size) {
 
-        PaginationDTO paginationDTO = new PaginationDTO();
+        PaginationDTO<QuestionDTO> paginationDTO = new PaginationDTO<>();
         // 查询问题总数
         Integer totalCount = questionMapper.findCount();
 
@@ -52,13 +57,13 @@ public class QuestionService {
             questionDTO.setUser(user);
             questionDTOList.add(questionDTO);
         }
-        paginationDTO.setQuestions(questionDTOList);
+        paginationDTO.setData(questionDTOList);
 
         return paginationDTO;
     }
 
     public PaginationDTO findMyQuestion(Long id, Integer page, Integer size) {
-        PaginationDTO paginationDTO = new PaginationDTO();
+        PaginationDTO<QuestionDTO> paginationDTO = new PaginationDTO<>();
         Integer totalPage;
         Integer totalCount = questionMapper.userQuestionCount(id);
 
@@ -87,12 +92,15 @@ public class QuestionService {
             questionDTO.setUser(user);
             questionDTOList.add(questionDTO);
         }
-        paginationDTO.setQuestions(questionDTOList);
+        paginationDTO.setData(questionDTOList);
         return paginationDTO;
     }
 
     public QuestionDTO findById(Long id) {
         QuestionDTO questionDTO = questionMapper.findById(id);
+        if (questionDTO == null) {
+            throw new CustomizeException(CustomizeErrorCode.QUESTION_NOT_FOUND);
+        }
         User byCreator = userMapper.findByCreator(questionDTO.getCreator());
         questionDTO.setUser(byCreator);
         return questionDTO;
@@ -116,5 +124,24 @@ public class QuestionService {
 
     public void viewCountInc(Long id) {
         questionMapper.updateViewCount(id);
+    }
+
+    public List<QuestionDTO> searchRelated(QuestionDTO queryDTO) {
+        if (StringUtils.isBlank(queryDTO.getTag())) {
+            return new ArrayList<>();
+        }
+        // String regexpTag = queryDTO.getTag().replace(",", "|");
+        String[] tags = StringUtils.split(queryDTO.getTag(), ",");
+        String regexpTag = Arrays.stream(tags).collect(Collectors.joining("|"));
+        Question question = new Question();
+        question.setId(queryDTO.getId());
+        question.setTag(regexpTag);
+        List<Question> questions = questionMapper.searchRelated(question);
+        List<QuestionDTO> questionDTOS = questions.stream().map(q -> {
+            QuestionDTO questionDTO = new QuestionDTO();
+            BeanUtils.copyProperties(q, questionDTO);
+            return questionDTO;
+        }).collect(Collectors.toList());
+        return questionDTOS;
     }
 }
