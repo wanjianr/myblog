@@ -88,6 +88,15 @@ public class CommentService {
         }
     }
 
+    /**
+     * 功能： 创建通知/记录评论人与被评论问题的相关信息和状态
+     * @param comment : 用于获取评论人的用户名
+     * @param receiver : 被回复问题的发起人id
+     * @param notifierName : 评论人的用户名
+     * @param outerTitle : 被回复问题的标题
+     * @param notificationType : 回复类型（1-REPLY_COMMENT，2-REPLY_QUESTION）
+     * @param outerId : 被回复问题的id
+     */
     private void createNotify(Comment comment, Long receiver, String notifierName, String outerTitle, NotificationTypeEnum notificationType, Long outerId) {
 //        if (receiver == comment.getCommentator()) {
 //            return;

@@ -17,14 +17,14 @@ public interface NotificationMapper {
             "      status, notifier_name, outer_title\n" +
             "      )\n" +
             "    values (#{id}, #{notifier}, #{receiver}, \n" +
-            "      #{outerId}, #{type}, #{gmtCreate,jdbcType=BIGINT}, \n" +
+            "      #{outerId}, #{type}, #{gmtCreate}, \n" +
             "      #{status}, #{notifierName}, #{outerTitle})")
     void insert(Notification notification);
 
     @Select("select count(1) from notification where receiver = #{id}")
     Integer userCommentCount(@Param("id") Long id);
 
-    @Select("select * from notification where receiver = #{id} limit #{offset},#{size}")
+    @Select("select * from notification where receiver = #{id} order by gmt_create desc limit #{offset},#{size}")
     List<Notification> findByReceiver(@Param("id") Long id, @Param("offset") Integer offset, @Param("size") Integer size);
 
     @Select("select * from notification where id = #{id}")

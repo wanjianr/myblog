@@ -20,10 +20,10 @@ public interface QuestionMapper {
     @Select("select count(1) from question")
     Integer findCount();
 
-    @Select("select * from question where creator=#{id} limit #{offset},#{size}")
+    @Select("select * from question where creator=#{id} order by gmt_create desc limit #{offset},#{size}")
     List<Question> findByCreator(@Param("id") Long id, @Param("offset") Integer offset, @Param("size") Integer size);
 
-    @Select("select count(1) from question where creator=#{id}")
+    @Select("select count(1) from question where creator=#{id} order by gmt_create desc")
     Integer userQuestionCount(@Param("id") Long id);
 
     @Select("select * from question where id = #{id}")

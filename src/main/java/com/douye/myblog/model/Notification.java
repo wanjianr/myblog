@@ -11,6 +11,6 @@ public class Notification {
     private Integer type;   // 指明该回复是评论还是解答
     private Long gmtCreate;  // 创建时间
     private Integer status;  // 标记该通知是否已读
-    private String notifierName;
-    private String outerTitle;
+    private String notifierName;  // 评论人的用户名
+    private String outerTitle;  // 所回复问题的名称
 }

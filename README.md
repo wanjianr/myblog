@@ -293,9 +293,10 @@ create table notification
             delay: 0,
             watch: false,
             placeholder: "请输入问题描述",
+            //图片上传
             imageUpload: true,
             imageFormats: ["jpg", "jpeg", "gif", "png", "bmp", "webp"],
-            imageUploadURL: "/file/upload",  // 上传图片的路径
+            imageUploadURL: "/file/upload",  // 上传图片时所请求的路径
         });
     });
 </script>
@@ -311,3 +312,23 @@ create table notification
     });
 </script>
 ```
+
+- 图片上传功能
+    - 开启图片上传功能
+    ```html
+    // 开启图片上传功能
+    imageUpload: true,
+    imageFormats: ["jpg", "jpeg", "gif", "png", "bmp", "webp"],
+    imageUploadURL: "/file/upload",  // 上传图片的路径
+    ```
+    - 新建控制层FileController用于处理上传图片请求
+    - 创建指定的json返回格式FileDTO
+    - 阿里云上开通oss服务`https://blog.csdn.net/sunnyzyq/article/details/101678657`
+    - 引入依赖
+    ```xml
+        <dependency>
+            <groupId>com.aliyun.oss</groupId>
+            <artifactId>aliyun-sdk-oss</artifactId>
+            <version>3.10.2</version>
+        </dependency>
+     ```
