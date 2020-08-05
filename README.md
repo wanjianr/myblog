@@ -244,7 +244,23 @@ create table comment
 
 #### 完成回复通知功能
 - 新建notification表
-
+```mysql
+-- auto-generated definition
+create table notification
+(
+    id            bigint auto_increment
+        primary key,
+    notifier      bigint        not null,
+    receiver      bigint        not null,
+    outer_id      bigint        not null,
+    type          int           not null,
+    gmt_create    bigint        not null,
+    status        int default 0 null,
+    notifier_name varchar(100)  not null,
+    outer_title   varchar(256)  not null
+)
+    charset = utf8;
+```
 - 新建notification模型类
 
 - 新建通知类型枚举类NotificationTypeEnum，用于记录通知的类型（回复问题，回复评论）
@@ -257,3 +273,41 @@ create table comment
         - 新建NotificationDTO类，用于封装前端需要显示的通知信息
     - 编写控制层NotificationController，用于实现用户在个人页面点击相关通知时，处理相关请求
     - 在拦截器SessionInterceptor中将用户未阅读的通知加入session中，方便后续页面随时获取
+    
+#### 增加富文本编辑
+- 搜索markdown editor github
+- 前端页面的输入框外层包裹以下代码
+```html
+<div id="question-editor">
+    <!--输入区域-->
+    <input type="hidden" id="question_id" th:value="${question.id}">
+    <textarea class="form-control comment" rows="6" id="comment_content"></textarea>
+</div>
+
+<script type="text/javascript">
+    $(function () {
+        var editor = editormd("question-editor", {
+            width: "100%",
+            height: 350,
+            path: "/js/lib/",
+            delay: 0,
+            watch: false,
+            placeholder: "请输入问题描述",
+            imageUpload: true,
+            imageFormats: ["jpg", "jpeg", "gif", "png", "bmp", "webp"],
+            imageUploadURL: "/file/upload",  // 上传图片的路径
+        });
+    });
+</script>
+```
+- 前端显示富文本内容时，用以下标签
+```html
+<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" id="question-view">
+    <textarea style="display:none;" th:text="具有markdown语法的内容"></textarea>
+</div>
+<script type="text/javascript">
+    $(function () {
+        editormd.markdownToHTML("question-view", {});
+    });
+</script>
+```

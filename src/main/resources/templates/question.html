@@ -4,6 +4,11 @@
     <title th:text="${question.title}"></title>
     <head th:insert="~{import :: head}"></head>
     <head th:insert="~{import :: markdown}"></head>
+    <script type="text/javascript">
+        $(function () {
+            editormd.markdownToHTML("question-view", {});
+        });
+    </script>
 </head>
 <body>
 <div th:insert="~{navigation :: nav}"></div>
@@ -34,11 +39,7 @@
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" id="question-view">
                     <textarea style="display:none;" th:text="${question.description}"></textarea>
                 </div>
-                <script type="text/javascript">
-                    $(function () {
-                        editormd.markdownToHTML("question-view", {});
-                    });
-                </script>
+
 
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12"
                      th:if="${!#lists.isEmpty(#httpServletRequest.getServletContext().getAttribute('FOOTER'))}"
@@ -99,6 +100,7 @@
                             <h5 class="media-heading">
                                 <span th:text="${comment.user.name}"></span>
                             </h5>
+
                             <div th:text="${comment.content}"></div>
                             <div class="menu">
                                 <span class="glyphicon glyphicon-thumbs-up icon"></span>
