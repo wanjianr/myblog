@@ -345,3 +345,38 @@ git gc --prune=now
 
 #### 添加搜索功能
 - 新建QuestionQueryDTO类，用于封装首页传来的数据，便于在数据库中查询
+- 编写动态sql，判断search是否为空，不为空时，查询问题时则使用search来匹配问题的title，得到查询结果
+
+#### 添加日志
+- 日志配置
+```properties
+# 将日志信息存储到文件
+# logging.path : 配置日志文件的路径
+# logging.file : 该属性用来配置日志文件名，如果该属性不配置，默认文件名为spring.log,  
+logging.path=/Users/jackie/workspace/rome/ 
+logging.file=logs/springbootdemo.log
+
+# 设置日志级别
+# 日志级别总共有TRACE < DEBUG < INFO < WARN < ERROR < FATAL ，且级别是逐渐提供，如果日志级别设置为INFO，则意味TRACE和DEBUG级别的日志都看不到。
+# logging.level : 该属性用于配置日志级别。
+logging.level.root = warn
+
+# 这里是用的root级别，即项目的所有日志，我们也可以使用package级别，即指定包下使用相应的日志级别
+# 可以改动root还是INFO级别，将指定包下的日志级别设置为WARN
+# logging.level.root = INFO
+logging.level.com.douye.myblog.mapper = WARN
+
+# 设置日志文件的大小，当文件超过该大小时，会新建一个日志文件
+logging.file.max-size=100MB
+# 记录15天的日志，超过该天数的日志直接删除
+logging.file.max-history=15
+
+```
+- 业务代码中使用
+```java
+log.error("callback get github error, {}",需要输出的变量);
+```
+
+#### 项目部署
+- 更新源: `yum update`
+- 安装git : `yum install git`
