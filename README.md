@@ -332,3 +332,15 @@ create table notification
             <version>3.10.2</version>
         </dependency>
      ```
+  
+#### github删除指定文件的所有提交记录
+```bash
+src/main/resources/application.properties
+
+git filter-branch --force --index-filter 'git rm --cached --ignore-unmatch src/main/resources/application.properties' --prune-empty --tag-name-filter cat -- --all
+git push origin master --force
+rm -rf .git/refs/original/
+git reflog expire --expire=now --all
+git gc --prune=now
+git gc --aggressive --prune=now
+```
