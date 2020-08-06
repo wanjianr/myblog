@@ -1,6 +1,7 @@
 package com.douye.myblog.mapper;
 
 import com.douye.myblog.dto.QuestionDTO;
+import com.douye.myblog.dto.QuestionQueryDTO;
 import com.douye.myblog.model.Question;
 import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Repository;
@@ -14,11 +15,25 @@ public interface QuestionMapper {
     @Insert("insert into question (title,description,gmt_create,gmt_modified,creator,comment_count,view_count,like_count,tag) values (#{title},#{description},#{gmtCreate},#{gmtModified},#{creator},#{commentCount},#{viewCount},#{likeCount},#{tag})")
     void create(Question question);
 
-    @Select("select * from question order by gmt_create desc limit #{offset},#{size}")
-    List<Question> findAll(@Param("offset") Integer offset, @Param("size") Integer size);
+    @Select("<script> \n" +
+            "select * from question \n" +
+                "<if test=\"search!=null and search!=''\"> \n" +
+                    "where title regexp #{search} \n" +
+                "</if> \n" +
+                "<if test=\"sort==null or sort==''\"> \n" +
+                    "order by gmt_create desc \n" +
+                "</if> \n" +
+            " limit #{offset},#{size} \n" +
+            "</script> \n")
+    List<Question> findAll(QuestionQueryDTO questionQueryDTO);
 
-    @Select("select count(1) from question")
-    Integer findCount();
+    @Select("<script> \n" +
+            "select count(*) from question \n" +
+                "<if test=\"search != null and search != ''\"> \n" +
+                    "where title regexp #{search} \n" +
+                "</if> \n" +
+            "</script> \n")
+    Integer findCount(QuestionQueryDTO questionQueryDTO);
 
     @Select("select * from question where creator=#{id} order by gmt_create desc limit #{offset},#{size}")
     List<Question> findByCreator(@Param("id") Long id, @Param("offset") Integer offset, @Param("size") Integer size);

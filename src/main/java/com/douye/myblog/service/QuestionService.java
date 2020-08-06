@@ -2,6 +2,7 @@ package com.douye.myblog.service;
 
 import com.douye.myblog.dto.PaginationDTO;
 import com.douye.myblog.dto.QuestionDTO;
+import com.douye.myblog.dto.QuestionQueryDTO;
 import com.douye.myblog.exception.CustomizeErrorCode;
 import com.douye.myblog.exception.CustomizeException;
 import com.douye.myblog.mapper.QuestionMapper;
@@ -27,11 +28,20 @@ public class QuestionService {
     @Autowired
     UserMapper userMapper;
 
-    public PaginationDTO<QuestionDTO> findAll(Integer page, Integer size) {
+    public PaginationDTO<QuestionDTO> findAll(Integer page, Integer size, String search) {
 
         PaginationDTO<QuestionDTO> paginationDTO = new PaginationDTO<>();
+
+        if (StringUtils.isNotBlank(search)) {
+            search = StringUtils.replace(search, " ", "|");
+        }
+
+        QuestionQueryDTO questionQueryDTO = new QuestionQueryDTO();
+
+        questionQueryDTO.setSearch(search);
+
         // 查询问题总数
-        Integer totalCount = questionMapper.findCount();
+        Integer totalCount = questionMapper.findCount(questionQueryDTO);
 
 
         Integer totalPage;
@@ -48,7 +58,15 @@ public class QuestionService {
 
         List<QuestionDTO> questionDTOList = new ArrayList<>();
         Integer offset = (page-1) * size;
-        List<Question> questions = questionMapper.findAll(offset,size);
+
+        questionQueryDTO.setOffset(offset);
+        questionQueryDTO.setSize(size);
+
+        List<Question> questions = questionMapper.findAll(questionQueryDTO);
+
+        if (questions == null || questions.size() < 1) {
+            throw new CustomizeException(CustomizeErrorCode.QUESTION_NOT_FOUND);
+        }
 
         for (Question question : questions) {
             User user = userMapper.findByCreator(question.getCreator());
