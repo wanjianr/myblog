@@ -30,9 +30,9 @@ public class SessionInterceptor implements HandlerInterceptor {
                 if (cookie.getName().equals("token")) {
                     String value = cookie.getValue();
                     User user = userMapper.findByToken(value);
-                    int unreadCount = notificationMapper.getUnreadCount(user.getId(), NotificationStatusEnum.UNREAD.getStatus());
                     if (user != null) {
                         request.getSession().setAttribute("user",user);
+                        int unreadCount = notificationMapper.getUnreadCount(user.getId(), NotificationStatusEnum.UNREAD.getStatus());
                         request.getSession().setAttribute("unreadCount",unreadCount);
                     }
                     break;

@@ -380,3 +380,8 @@ log.error("callback get github error, {}",需要输出的变量);
 #### 项目部署
 - 更新源: `yum update`
 - 安装git : `yum install git`
+- 克隆项目到本地： git clone git@github.com:wanjianr/myblog.git
+    - 可能会出项权限问题，解决: `http://www.mamicode.com/info-detail-2523100.html`
+- 安装maven : `yum install maven`
+
+
