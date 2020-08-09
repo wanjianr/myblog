@@ -22,7 +22,7 @@ public class HotTagTasks {
     @Autowired
     HotTagCache hotTagCache;
 
-    @Scheduled(fixedRate = 1000 * 60)
+    @Scheduled(fixedRate = 1000 * 60 * 60)
     public void hotTagSchedule() {
         int offset = 0, limit = 5;
         log.info("hotTagSchedule start {}", new Date());

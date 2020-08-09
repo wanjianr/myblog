@@ -33,6 +33,7 @@ public class IndexController {
                         @RequestParam(name = "tag",required = false) String tag) {
         PaginationDTO<QuestionDTO> pagination = questionService.findAll(page, size, search, tag);
         List<String> hots = hotTagCache.getHots();
+        model.addAttribute("tag",tag);
         model.addAttribute("tags", hots);
         model.addAttribute("pagination",pagination);
         return "index";
