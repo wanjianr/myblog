@@ -20,6 +20,9 @@ public interface QuestionMapper {
                 "<if test=\"search!=null and search!=''\"> \n" +
                     "where title regexp #{search} \n" +
                 "</if> \n" +
+                "<if test=\"tag != null and tag != ''\"> \n" +
+                    "where tag regexp #{tag} \n" +
+                "</if> \n" +
                 "<if test=\"sort==null or sort==''\"> \n" +
                     "order by gmt_create desc \n" +
                 "</if> \n" +
@@ -31,6 +34,9 @@ public interface QuestionMapper {
             "select count(*) from question \n" +
                 "<if test=\"search != null and search != ''\"> \n" +
                     "where title regexp #{search} \n" +
+                "</if> \n" +
+                "<if test=\"tag != null and tag != ''\"> \n" +
+                    "where tag regexp #{tag} \n" +
                 "</if> \n" +
             "</script> \n")
     Integer findCount(QuestionQueryDTO questionQueryDTO);

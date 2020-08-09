@@ -28,7 +28,7 @@ public class QuestionService {
     @Autowired
     UserMapper userMapper;
 
-    public PaginationDTO<QuestionDTO> findAll(Integer page, Integer size, String search) {
+    public PaginationDTO<QuestionDTO> findAll(Integer page, Integer size, String search, String hots) {
 
         PaginationDTO<QuestionDTO> paginationDTO = new PaginationDTO<>();
 
@@ -39,6 +39,7 @@ public class QuestionService {
         QuestionQueryDTO questionQueryDTO = new QuestionQueryDTO();
 
         questionQueryDTO.setSearch(search);
+        questionQueryDTO.setTag(hots);
 
         // 查询问题总数
         Integer totalCount = questionMapper.findCount(questionQueryDTO);

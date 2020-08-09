@@ -384,4 +384,19 @@ log.error("callback get github error, {}",需要输出的变量);
     - 可能会出项权限问题，解决: `http://www.mamicode.com/info-detail-2523100.html`
 - 安装maven : `yum install maven`
 
-
+#### 实现热门标签展示
+- 开启定时任务
+    - 编写HotTagTasks类
+    ```java
+    @Component
+    @Slf4j
+    public class HotTagTasks {  
+        @Scheduled(fixedRate = 5000)
+        public void hotTagSchedule() {
+            log.info("hotTagSchedule start {}", new Date());
+        }
+    }
+    ```
+    - 在启动类上添加注解`@EnableScheduling`
+    - 创建HotTagDTO类，用于封装tag对应的热度（注：需要实现Comparable接口，重写compareTo方法）
+    - 创建tag热度更新类HotTagCache，用于更新排名靠前的标签
